@@ -1,9 +1,9 @@
 require 'oystercard'
 describe Oystercard do
+  subject {Oystercard.new}
 
   it 'checks if a new card has a balance of 0' do
-    card = Oystercard.new
-    expect(card.balance).to eq 0
+    expect(subject.balance).to eq 0
   end
 
   describe '#top_up' do
@@ -16,5 +16,14 @@ describe Oystercard do
     expect {subject.top_up(Oystercard::MAX_LIMIT+1)}.to raise_error "The balance exceeds the #{Oystercard::MAX_LIMIT} limit"
   end
 end
+
+  describe '#deduct' do
+    it 'deducts a single journey fare from the card' do
+      subject.top_up(10)
+      deduction = 2.5
+      expect(subject.deduct(deduction)).to eq (subject.balance)
+    end
+
+  end
 
 end
