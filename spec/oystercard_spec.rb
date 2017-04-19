@@ -5,11 +5,26 @@ describe Oystercard do
   subject {Oystercard.new}
   let(:max_limit) {Oystercard::MAX_LIMIT}
   let(:fare) {Oystercard::FARE}
-  let(:station) { double :station }
+  let(:entry_station) { double :entry_station }
+  let(:exit_station) { double :exit_station }
+  let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+
+
+  #it 'creates journey at touch out' do
+  #  subject.top_up(max_limit)
+  #  subject.touch_in(entry_station)
+  #  subject.touch_out(exit_station)
+  #  expect (subject.journeys).to include journey
+  #end
+
 
     it 'checks if a new card has a balance of 0' do
     expect(subject.balance).to eq 0
     end
+    it 'checks if a card has an empty list of journeys by default' do
+    expect(subject.journeys).to be_empty
+    end
+
 
     describe '#top_up' do
     it 'tops up a card' do
@@ -23,14 +38,14 @@ describe Oystercard do
 
 context 'it uses max top_up' do
     before {subject.top_up(max_limit)}
-    before {subject.touch_in(station)}
-    
+    before {subject.touch_in(entry_station)}
+
     describe '#touch_in' do
-    it 'changes the state of the card to be in use' do
-      expect(subject.entry_station).to eq station
+    it 'adds an entry station' do
+      expect(subject.entry_station).to eq [entry_station]
     end
     it 'remember entry station after touch in' do
-      expect(subject.entry_station).to eq station
+      expect(subject.entry_station).to eq [entry_station]
     end
     end
 
@@ -39,27 +54,30 @@ context 'it uses max top_up' do
     expect(subject).to be_in_journey
     end
     it 'checks if a customer who touched out is out of journey' do
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+    subject.touch_out(exit_station)
+    expect(subject.exit_station).to eq [exit_station]
     end
     end
 
     describe '#touch_out' do
-      it 'changes the state of a card to be out of use' do
-        subject.touch_out
-        expect(subject.entry_station).to eq nil
-      end
+      #it 'changes the state of a card to be out of use' do
+      #  subject.touch_out(exit_station)
+      #  expect(subject.entry_station).to eq
+      #end
       it 'deducts fare when card touches out' do
-       expect {subject.touch_out}.to change {subject.balance}.by(-fare)
+       expect {subject.touch_out(exit_station)}.to change {subject.balance}.by(-fare)
        end
+
      end
+
+
 
 end
 
 context 'it does not require a top_up' do
     describe '#touch_in' do
       it 'throws and error if balance is bellow minimum at touch in' do
-      expect {subject.touch_in(station)}.to raise_error 'Insufficient funds'
+      expect {subject.touch_in(exit_station)}.to raise_error 'Insufficient funds'
       end
     end
  end
