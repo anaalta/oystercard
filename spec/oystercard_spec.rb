@@ -11,7 +11,6 @@ describe Oystercard do
     describe '#top_up' do
 
     it 'tops up a card' do
-    expect(subject.top_up(3)).to eq (3)
     expect {subject.top_up 1}.to change {subject.balance}.by 1
     end
 

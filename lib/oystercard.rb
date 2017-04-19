@@ -2,6 +2,7 @@
 class Oystercard
 
 MAX_LIMIT = 90
+FARE = 1
 
 attr_reader :balance, :status
 
@@ -16,11 +17,11 @@ attr_reader :balance, :status
   end
 
   def deduct
-    @balance -= 2.5
+    @balance -= FARE
   end
 
   def touch_in
-    fail 'Insufficient funds' if @balance < 1
+    fail 'Insufficient funds' if @balance < FARE
     @status=true
   end
 
