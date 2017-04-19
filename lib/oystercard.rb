@@ -12,16 +12,16 @@ attr_reader :balance, :status
 
   def top_up(amount)
     fail "The balance exceeds the #{Oystercard::MAX_LIMIT} limit" if @balance+amount > MAX_LIMIT
-    @balance = @balance += amount
+    @balance += amount
   end
 
-  def deduct(deduction)
-    @balance -= deduction
+  def deduct
+    @balance -= 2.5
   end
 
   def touch_in
+    fail 'Insufficient funds' if @balance < 1
     @status=true
-    #return 'You have touched in!'
   end
 
   def in_journey?
@@ -30,7 +30,6 @@ attr_reader :balance, :status
 
   def touch_out
     @status=false
-  #return 'You have touched out'
   end
 
 
