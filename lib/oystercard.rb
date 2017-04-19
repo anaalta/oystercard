@@ -26,11 +26,12 @@ attr_reader :balance, :status
   end
 
   def in_journey?
-  @status
+    @status
   end
 
   def touch_out
     @status=false
+    deduct
   end
 
 

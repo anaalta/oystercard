@@ -24,11 +24,10 @@ describe Oystercard do
     it 'deducts a single journey fare from the card' do
       expect(subject.deduct).to eq (subject.balance)
     end
-   end
+  end
 
 
   describe '#touch_in' do
-
   it 'changes the state of the card to be in use' do
     subject.top_up(Oystercard::MAX_LIMIT)
     subject.touch_in
@@ -57,7 +56,9 @@ describe Oystercard do
       subject.touch_out
       expect(subject.status).to eq false
     end
+
+    it 'deducts fare when card touchs out' do
+      expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::FARE)
+    end
   end
-
-
 end
