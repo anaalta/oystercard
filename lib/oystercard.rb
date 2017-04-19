@@ -16,10 +16,6 @@ attr_reader :balance, :status
     @balance += amount
   end
 
-  def deduct
-    @balance -= FARE
-  end
-
   def touch_in
     fail 'Insufficient funds' if @balance < FARE
     @status=true
@@ -32,6 +28,12 @@ attr_reader :balance, :status
   def touch_out
     @status=false
     deduct
+  end
+
+  private
+
+  def deduct
+    @balance -= FARE
   end
 
 
