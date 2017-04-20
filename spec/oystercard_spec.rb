@@ -7,7 +7,7 @@ describe Oystercard do
   let(:fare) {Oystercard::FARE}
   let(:entry_station) { double :entry_station }
   let(:exit_station) { double :exit_station }
-  let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+  let(:journey){ { entry_station => exit_station} }
 
 
   #it 'creates journey at touch out' do
